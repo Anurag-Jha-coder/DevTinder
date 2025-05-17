@@ -3,13 +3,9 @@ import connectDB from "./config/database.js";
 const app = express();
 import { User } from "./models/user.js";
 
+app.use(express.json());
 app.post("/signup", async (req, res) => {
-  const user = new User({
-    firstName: "Sachin",
-    lastName: "Tendulkar",
-    emailId: "sachin123@gmail.com",
-    password: "Anurag2002",
-  });
+  const user = new User(req.body);
 
   try {
     await user.save();
@@ -17,6 +13,30 @@ app.post("/signup", async (req, res) => {
     res.send("User created successfully");
   } catch (err) {
     res.status(400).send("The user not created");
+  }
+});
+
+app.get("/user", async (req, res) => {
+  const email = req.body.emailId;
+
+  try {
+    const user = await User.find({ emailId: email });
+    if (user.length == 0) {
+      res.status(404).send("User not found");
+    } else {
+      res.send(user);
+    }
+  } catch (err) {
+    res.status(400).send("Something went wrong");
+  }
+});
+
+app.get("/feed", async (req, res) => {
+  try {
+    const feed = await User.find({});
+    res.status(200).send(feed);
+  } catch (err) {
+    res.status(400).send("Something went wrong");
   }
 });
 
