@@ -1,5 +1,7 @@
 
 import mongoose, {Schema} from "mongoose";
+import validator, { isStrongPassword } from 'validator';
+import isURL from "validator/lib/isURL";
 
 const userSchema = new Schema({
     firstName:{
@@ -17,11 +19,21 @@ const userSchema = new Schema({
         lowercase: true,
         unique:true,
         trim:true, 
+        validate: (value) =>{
+            if(!validator.isEmail(value)){
+                throw new Error("Please enter a valid email")
+            }
+        }
     },
 
     password:{
         type: String,
         require:true,
+         validate: (value)=>{
+            if(!isStrongPassword(value)){
+                throw new Error("please enter a strong password")
+            }
+        }
     }, 
 
     age:{
@@ -40,6 +52,11 @@ const userSchema = new Schema({
 
     photoUrl:{
         type:String,
+        validate: (value)=>{
+            if(!isURL(value)){
+                throw new Error("Please enter a valid URL")
+            }
+        }
     },
 
     about:{
@@ -48,7 +65,7 @@ const userSchema = new Schema({
     },
 
     skill:{
-        type: [Stirng],
+        type: [String],
     }
 
 },

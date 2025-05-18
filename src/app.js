@@ -40,34 +40,43 @@ app.get("/feed", async (req, res) => {
   }
 });
 
-
-
-app.delete("/user", async(req, res) =>{
-
+app.delete("/user", async (req, res) => {
   const userId = req.body.userId;
-  try{
-  const user =  await User.findByIdAndDelete(userId)
-  res.status(200).send("User deleted successfully")
-  }catch(err){
-    console.log(err)
+  try {
+    const user = await User.findByIdAndDelete(userId);
+    res.status(200).send("User deleted successfully");
+  } catch (err) {
+    console.log(err);
     res.status(400).send("Something went wrong while deleting user");
   }
-})
+});
 
-
-app.patch("/user", async(req, res) =>{
+app.patch("/user/:userId", async (req, res) => {
   const data = req.body;
 
-  try{
-   const user = await User.findByIdAndUpdate(req.body.userId, data);
-   res.status(200).send("User updated successfully"); 
+  try {
+    const ALLOWED_UPDATES = ["photoUrl", "about", "skill", "age", "gender"];
 
-  }catch(err){
+    const isAllowedUpdate = Object
+      .keys(data)
+      .every((k) => ALLOWED_UPDATES.includes(k));
+
+      if(!isAllowedUpdate){
+        throw new Error("Update not allowed")
+      }
+      
+      if(data?.skill.length > 10){
+        throw new Error("Skill should be less then 10")
+      }
+      
+
+    const user = await User.findByIdAndUpdate(req.params?.userId, data);
+    res.status(200).send("User updated successfully");
+  } catch (err) {
     console.log(err);
-    res.status(400).send("Somthing went wrong while updating the user")
+    res.status(400).send("Somthing went wrong while updating the user: " + err.message);
   }
-
-})
+});
 
 connectDB()
   .then(() => {
