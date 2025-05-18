@@ -12,7 +12,7 @@ app.post("/signup", async (req, res) => {
 
     res.send("User created successfully");
   } catch (err) {
-    res.status(400).send("The user not created");
+    res.status(400).send("The user not created  " + err.message);
   }
 });
 
