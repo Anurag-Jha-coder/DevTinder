@@ -1,7 +1,10 @@
 
 import mongoose, {Schema} from "mongoose";
-import validator, { isStrongPassword } from 'validator';
-import isURL from "validator/lib/isURL";
+import validator  from 'validator';
+const {isStrongPassword}  = validator;
+import isURL from "validator/lib/isURL.js";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 const userSchema = new Schema({
     firstName:{
@@ -74,6 +77,23 @@ const userSchema = new Schema({
 
 }
 );
+
+
+
+userSchema.methods.getJWT = async function(){
+    const user = this;
+    const token = jwt.sign({_id: user._id} ,"Anurag@2002", {expiresIn:"7d"});
+    return token;
+}
+
+userSchema.methods.isPasswordCorrect = async function(passwordInputByUser){
+    const user = this;
+    const hashPassword = user.password;
+
+    const isCorrect = await bcrypt .compare(passwordInputByUser, hashPassword);
+
+    return isCorrect;
+}
 
 export const User = mongoose.model("User", userSchema);
 
