@@ -2,7 +2,7 @@ import express from "express";
 import { User } from "../models/user.js";
 import userAuth from "../middlewares/auth.js";
 import { validateProfileUpdates } from "../utils/validator.js";
-import bcrypt from "bcrypt "
+import bcrypt from "bcrypt"
 
 
 const profileRouter = express.Router();

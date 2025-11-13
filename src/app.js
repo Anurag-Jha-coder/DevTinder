@@ -5,6 +5,7 @@ const app = express();
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/auth.js";
 import profileRouter from "./routes/profile.js";
+import RequestRouter  from "./routes/request.js";
 
 
 app.use(express.json());
@@ -12,6 +13,7 @@ app.use(cookieParser());
 
 app.use("/", userRouter);
 app.use("/", profileRouter)
+app.use("/", RequestRouter);
 
 
 
