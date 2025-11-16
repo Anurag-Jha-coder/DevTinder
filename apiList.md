@@ -33,3 +33,25 @@ Patch pasword change
     3.1 -- user form request use 
         -- update password field (by converting into hash)
 
+
+
+
+Anurag(from) - Rahul(to) (Accepted)
+
+
+
+Anurag
+  - connections 
+  -fromUserid - Rahul  
+  -toUserid - Anruag
+
+
+Rahul 
+  - connections
+  fromUserid - Rahul
+  touserid - Anurag 
+
+
+  logic 
+  jab mera loggedin user fromuserid h -> show touserid
+  otherwise show -> fromuserid

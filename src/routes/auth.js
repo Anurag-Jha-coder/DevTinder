@@ -66,7 +66,7 @@ authRouter.post("/logout", async (req, res) =>{
         expires: new Date(Date.now()) 
     });
 
-    res.status(200).send("Logout Successful !"); 1``
+    res.status(200).send("Logout Successful !"); 
 })
 
 export default authRouter;
